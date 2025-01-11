@@ -1,6 +1,7 @@
 # Privacy Policy
 
-Effective Date: 01/10/2025
+Effective Date: 01/10/2025 MM/DD/YYYY
+Last modified on 01/10/2025 (MM/DD/YYYY)
 
 Task Planner ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy outlines how we manage user information.
 
@@ -22,5 +23,5 @@ The app uses local storage (e.g., to save preferences or settings), this data re
 
 We reserve the right to update this Privacy Policy at any time. If changes are made, the revised policy will be posted within the application, and the effective date will be updated accordingly.
 
-By using Task Planner, you acknowledge and agree to the terms of this Privacy Policy.
+**By using Task Planner, you acknowledge and agree to the terms of this Privacy Policy.**
 
