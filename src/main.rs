@@ -107,7 +107,7 @@ fn first_disclaimer()   {
     println!("terms and conditions of this program. If you do not ");
     println!("agree to these terms, please exit the program now. ");
     println!("To view the full list of what this program does, visit");
-    println!("https://github.com/polycarbohydrate/task_planner/blob/main/privacy_policy.md");
+    println!("https://github.com/Polycarbohydrate/Task-Planner/blob/main/Privacy-Policy.md");
     println!(" ");
     println!("If you are uncomfortable with this program you can ");
     println!("exit now or any time by pressing 'Ctrl + C'.");
@@ -157,6 +157,7 @@ fn main_console()   {
     println!("5. Mark a task as completed");
     println!("6. Exit the program");
     println!("7. Remove the program and its data/files");
+    println!("8. Additional Options");
     println!("-------------------------------------------------------");
     loop {
         let decision = inputs();
@@ -258,6 +259,7 @@ fn view_tasks()   {
     println!("\n{}", contents);
     println!("----------------------------------------------------");
     press_btn_continue::wait("Press any key to continue...").unwrap();
+    println!(" ");
     main_console();
 }
 
@@ -393,5 +395,15 @@ fn uninstall()   {
     println!("----------------------------------------------------");
     println!("This program's data has been removed. If you do not wish to use this program anymore you can delete this executable.");
     press_btn_continue::wait("Press any key to continue...").unwrap();
+    println!(" ");
     main_console();
+}
+
+fn additional_options() {
+        println!("-------------------------------------------------------");
+        println!("Type in the option you would like to choose:");
+        println!("1. Change the program's settings");
+        println!("2. View the program's settings");
+        println!("3. Back to main console");
+        println!("-------------------------------------------------------");
 }
