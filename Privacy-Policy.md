@@ -18,7 +18,7 @@ No Third-Party Sharing: Since we do not collect data, there is no information to
 
 ## Local Storage
 
-The app uses local storage (e.g., to save preferences or settings), this data remains on your device and is not accessible to us.
+The app uses local storage (e.g., to save preferences or settings), this data remains on your device and is not accessible to us. All data is stored in the `C:\Users\{USERNAME}\AppData\Roaming\Task Planner` folder on Windows.
 
 ## Changes to This Privacy Policy
 
