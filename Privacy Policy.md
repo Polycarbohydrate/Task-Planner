@@ -1,6 +1,7 @@
 # Privacy Policy
 
 Effective Date: 01/10/2025 MM/DD/YYYY
+
 Last modified on 01/10/2025 (MM/DD/YYYY)
 
 Task Planner ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy outlines how we manage user information.
