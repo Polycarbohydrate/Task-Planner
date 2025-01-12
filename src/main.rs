@@ -190,6 +190,10 @@ fn main_console()   {
                 uninstall();
                 break;
             }
+            "8" => {
+                additional_options();
+                break;
+            }
             _ => {
                 println!("--------------------------------------------------------------------------");
                 println!("Invalid response. Please try again. (type '1', '2', '3', '4', '5', or '6'.");
@@ -400,10 +404,143 @@ fn uninstall()   {
 }
 
 fn additional_options() {
-        println!("-------------------------------------------------------");
-        println!("Type in the option you would like to choose:");
-        println!("1. Change the program's settings");
-        println!("2. View the program's settings");
-        println!("3. Back to main console");
-        println!("-------------------------------------------------------");
+    println!("-------------------------------------------------------");
+    println!("Type in the option you would like to choose:");
+    println!("1. Privacy Policy");
+    println!("2. License");
+    println!("3. Credits");
+    println!("4. Report a bug/request a feature");
+    println!("5. Source Code / Project Page");
+    println!("6. Back to main console");
+    println!("-------------------------------------------------------");
+
+    loop {
+        let decision = inputs();
+        match decision.trim() {
+            "1" => {
+                println!("-------------------------------------------------------");
+                println!(
+                        r#"
+# Privacy Policy
+
+Effective Date: 01/10/2025 MM/DD/YYYY
+
+Last modified on 01/10/2025 (MM/DD/YYYY)
+
+Task Planner ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy outlines how we manage user information.
+
+## No Data Collection
+
+We do not collect, store, or process any personal or non-personal data from our users. This means:
+
+No Personal Data: We do not ask for or store any personally identifiable information (such as names
+,email addresses, or phone numbers).
+
+No Usage Data: We do not track or log your activity within the application.
+
+No Third-Party Sharing: Since we do not collect data, there is no information to share with third
+parties.
+
+## Local Storage
+
+The app uses local storage (e.g., to save preferences or settings), this data remains on your device and
+is not accessible to us. All data is stored in the `C:\Users\[USERNAME]\AppData\Roaming\Task Planner`
+folder on Windows.
+
+## Changes to This Privacy Policy
+
+We reserve the right to update this Privacy Policy at any time. If changes are made, the revised policy
+will be posted within the application, and the effective date will be updated accordingly.
+
+**By using Task Planner, you acknowledge and agree to the terms of this Privacy Policy.**
+
+https://github.com/Polycarbohydrate/Task-Planner/blob/main/Privacy-Policy.md
+
+                        "#);
+                println!("-------------------------------------------------------");
+                press_btn_continue::wait("Press any key to continue...").unwrap();
+                println!(" ");
+                additional_options();
+                break;
+            }
+            "2" => {
+                println!("-------------------------------------------------------");
+                println!(
+                        r#"
+MIT License
+
+Copyright (c) 2025 Polycarbohydrate
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+https://github.com/Polycarbohydrate/Task-Planner/blob/main/LICENSE
+
+                        "#);
+                println!("-------------------------------------------------------");
+                press_btn_continue::wait("Press any key to continue...").unwrap();
+                println!(" ");
+                additional_options();
+                break;
+            }
+            "3" => {
+                println!("-------------------------------------------------------");
+                println!("Credits:");
+                println!(" ");
+                println!("This program was created by Polycarbohydrate.");
+                println!("https://github.com/Polycarbohydrate");
+                println!(" ");
+                println!("Contributors:");
+                println!("https://github.com/Polycarbohydrate/Task-Planner/graphs/contributors");
+                println!(" ");
+                println!("-------------------------------------------------------");
+                press_btn_continue::wait("Press any key to continue...").unwrap();
+                println!(" ");
+                additional_options();
+                break;
+            }
+            "4" => {
+                println!("-------------------------------------------------------");
+                println!("Please visit https://github.com/Polycarbohydrate/Task-Planner/issues to report a bug or request a feature.");
+                println!("-------------------------------------------------------");
+                press_btn_continue::wait("Press any key to continue...").unwrap();
+                println!(" ");
+                additional_options();
+                break;
+            }
+            "5" => {
+                println!("-------------------------------------------------------");
+                println!("Please visit https://github.com/Polycarbohydrate/Task-Planner to view the source code and project page.");
+                println!("-------------------------------------------------------");
+                press_btn_continue::wait("Press any key to continue...").unwrap();
+                additional_options();
+                break;
+            }
+            "6" => {
+                main_console();
+                break;
+            }
+            _ => {
+                println!("-------------------------------------------------------");
+                println!("Invalid response. Please try again. (type '1', '2', '3', or '4'.");
+                println!("-------------------------------------------------------");
+                continue
+            }
+        }
+    }
 }
