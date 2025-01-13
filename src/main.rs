@@ -1,7 +1,7 @@
 // Used for creation and manipulation of files and
 // directories for storage of tasks and configuration
-use std::io::{stdin, Read, Write, Seek, SeekFrom};
 use std::fs::{create_dir, File, OpenOptions};
+use std::io::{stdin, Read, Seek, SeekFrom, Write};
 use std::path::Path;
 
 // To check username to create the directories and files
@@ -20,9 +20,15 @@ trait Describe {
     fn describe(&self) -> String;
 }
 
-impl Describe for Task<String>   {
+impl Describe for Task<String> {
     fn describe(&self) -> String {
-        format!("Task: {}\nDescription: {}\nDate: {}\nTime: {}\nPriority: {}\n\n", self.task_name, self.task_description, self.task_date, self.task_time, self.task_priority)
+        format!(
+            "Task: {}\nDescription: {}\nDate: {}\nTime: {}\nPriority: {}\n\n",
+            self.task_name,
+            self.task_description,
+            self.task_date,
+            self.task_time,
+            self.task_priority)
     }
 }
 
@@ -35,64 +41,90 @@ fn inputs() -> String {
 
 // Function to get the username of the user and reduce redundancy
 fn get_username() -> String {
-    let username = env::var("USERNAME").expect("Failed to get username");
-    username
+    env::var("USERNAME").expect("Failed to get username")
 }
 
 // Start off with checking of the configuration file
-fn main()   {
+fn main() {
     config_file();
 }
 
 // Check the configuration file
-fn config_file()    {
+fn config_file() {
     // Check the username of the user to create the directories and files
-    let path_of_txt = format!("C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Config.txt", get_username());
-    let path_of_dir = format!("C:\\Users\\{}\\AppData\\Roaming\\Task Planner", get_username());
+    let path_of_txt = format!(
+        "C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Config.txt",
+        get_username()
+    );
+    let path_of_dir = format!(
+        "C:\\Users\\{}\\AppData\\Roaming\\Task Planner",
+        get_username()
+    );
 
     // Check if the file exists and read the contents
     // If the file does not exist, create the file
     // If the file exists, check the contents and act accordingly
     let hypothetical_file = Path::new(path_of_txt.as_str());
     if hypothetical_file.exists() {
-        let mut check_returning_value = File::open(path_of_txt.as_str()).expect("Failed to open file");
+        let mut check_returning_value =
+            File::open(path_of_txt.as_str()).expect("Failed to open file");
         let mut contents = String::new();
-        check_returning_value.read_to_string(&mut contents).expect("Failed to read file");
+        check_returning_value
+            .read_to_string(&mut contents)
+            .expect("Failed to read file");
         if contents.trim() == "Returning: 0" {
             check_tasks_file();
             first_disclaimer();
-        }   else if contents.trim() == "Returning: 1" {
+        } else if contents.trim() == "Returning: 1" {
             check_tasks_file();
             main_console();
-        }   else {
+        } else {
             first_disclaimer();
         }
-    }   else {
+    } else {
         create_dir(path_of_dir.as_str()).expect("Failed to create directory");
-        let mut config_file = OpenOptions::new().create(true).write(true).open(path_of_txt).expect("Failed to open file");
-        config_file.write_all(b"Returning: 0").expect("Failed to write to file");
+        let mut config_file = OpenOptions::new()
+            .create(true)
+            .truncate(true)
+            .write(true)
+            .open(path_of_txt)
+            .expect("Failed to open file");
+        config_file
+            .write_all(b"Returning: 0")
+            .expect("Failed to write to file");
         check_tasks_file();
         first_disclaimer();
     }
 }
 
 // Check the tasks file exists, otherwise create one
-fn check_tasks_file()   {
+fn check_tasks_file() {
     // Check the username of the user to create the file
     let username = env::var("USERNAME").expect("Failed to get username");
-    let path_of_txt = format!("C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt", username);
+    let path_of_txt = format!(
+        "C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt",
+        username
+    );
     let hypothetical_file = Path::new(path_of_txt.as_str());
-    if hypothetical_file.exists() {}
-    else {
-        let mut tasks_file = OpenOptions::new().create(true).write(true).open(path_of_txt).expect("Failed to open file");
+    if hypothetical_file.exists() {
+    } else {
+        let mut tasks_file = OpenOptions::new()
+            .create(true)
+            .truncate(true)
+            .write(true)
+            .open(path_of_txt)
+            .expect("Failed to open file");
         tasks_file.write_all(b"").expect("Failed to write to file");
     }
 }
 
 // Display the first disclaimer for first time users
-fn first_disclaimer()   {
+fn first_disclaimer() {
     // Check the username of the user to edit the config file
-    let path_of_txt = format!("C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Config.txt", get_username());
+    let path_of_txt = format!(
+        "C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Config.txt",
+        get_username()
+    );
 
     println!("--------------- Task Planner Program ---------------");
     println!("Copyright (c) 2025 Polycarbohydrate");
@@ -121,13 +153,27 @@ fn first_disclaimer()   {
     loop {
         let response = inputs();
         if response.trim().to_lowercase() == "y" {
-            let mut change_config_file = OpenOptions::new().write(true).read(true).create(true).open(path_of_txt).expect("Failed to open file");
+            let mut change_config_file = OpenOptions::new()
+                .write(true)
+                .read(true)
+                .create(true)
+                .truncate(true)
+                .open(path_of_txt)
+                .expect("Failed to open file");
             let mut contents = String::new();
-            change_config_file.read_to_string(&mut contents).expect("Failed to read file");
-            change_config_file.seek(SeekFrom::Start(0)).expect("Failed to seek file");
-            change_config_file.set_len(0).expect("Failed to truncate file");
+            change_config_file
+                .read_to_string(&mut contents)
+                .expect("Failed to read file");
+            change_config_file
+                .seek(SeekFrom::Start(0))
+                .expect("Failed to seek file");
+            change_config_file
+                .set_len(0)
+                .expect("Failed to truncate file");
             let new_contents = contents.replace("Returning: 0", "Returning: 1");
-            change_config_file.write_all(new_contents.as_bytes()).expect("Failed to write to file");
+            change_config_file
+                .write_all(new_contents.as_bytes())
+                .expect("Failed to write to file");
             main_console();
             break;
         } else if response.trim().to_lowercase() == "n" {
@@ -140,14 +186,13 @@ fn first_disclaimer()   {
             println!("continue, this prompt will not appear again. If you ");
             println!("choose no, the program will close.");
             println!("----------------------------------------------------");
-            continue
+            continue;
         }
     }
 }
 
-
 // Main console for the program for returning users and choosing what to do next
-fn main_console()   {
+fn main_console() {
     println!("--------------- Task Planner Program ---------------");
     println!("Type in the option you would like to choose:");
     println!("1. Add a task");
@@ -180,7 +225,7 @@ fn main_console()   {
             }
             "5" => {
                 mark_as_completed();
-                break
+                break;
             }
             "6" => {
                 println!("Closing program...");
@@ -195,19 +240,26 @@ fn main_console()   {
                 break;
             }
             _ => {
-                println!("--------------------------------------------------------------------------");
-                println!("Invalid response. Please try again. (type '1', '2', '3', '4', '5', or '6'.");
-                println!("--------------------------------------------------------------------------");
-                continue
-
+                println!(
+                    "--------------------------------------------------------------------------"
+                );
+                println!(
+                    "Invalid response. Please try again. (type '1', '2', '3', '4', '5', or '6'."
+                );
+                println!(
+                    "--------------------------------------------------------------------------"
+                );
+                continue;
             }
         }
     }
-
 }
 
-fn add_task()  {
-    let task_file_path = format!("C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt", get_username());
+fn add_task() {
+    let task_file_path = format!(
+        "C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt",
+        get_username()
+    );
     println!("--------------- Task Planner Program ---------------");
     println!("Please enter the name of the task:");
     let task_name = inputs();
@@ -227,8 +279,13 @@ fn add_task()  {
         task_priority,
     };
     let task_description = new_task.describe();
-    let mut write_to_file = OpenOptions::new().write(true).append(true).open(task_file_path).expect("Failed to open file");
-    write_to_file.write_all(task_description.as_bytes()).expect("Failed to write to file");
+    let mut write_to_file = OpenOptions::new()
+        .append(true)
+        .open(task_file_path)
+        .expect("Failed to open file");
+    write_to_file
+        .write_all(task_description.as_bytes())
+        .expect("Failed to write to file");
     println!("----------------------------------------------------");
     println!("Task added");
     println!("Would you like to add another task? (y/n)");
@@ -250,15 +307,19 @@ fn add_task()  {
         }
     }
     println!("----------------------------------------------------");
-
 }
 
-fn view_tasks()   {
+fn view_tasks() {
     println!("--------------- Task Planner Program ---------------");
-    let task_file_path = format!("C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt", get_username());
+    let task_file_path = format!(
+        "C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt",
+        get_username()
+    );
     let mut read_from_file = File::open(task_file_path).expect("Failed to open file");
     let mut contents = String::new();
-    read_from_file.read_to_string(&mut contents).expect("Failed to read file");
+    read_from_file
+        .read_to_string(&mut contents)
+        .expect("Failed to read file");
     println!("Tasks:");
     println!("\n{}", contents);
     println!("----------------------------------------------------");
@@ -271,10 +332,15 @@ fn remove_task() {
     println!("--------------- Task Planner Program ---------------");
     println!("Please enter the name of the task you would like to remove:");
     let task_name = inputs();
-    let task_file_path = format!("C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt", get_username());
+    let task_file_path = format!(
+        "C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt",
+        get_username()
+    );
     let mut read_from_file = File::open(&task_file_path).expect("Failed to open file");
     let mut contents = String::new();
-    read_from_file.read_to_string(&mut contents).expect("Failed to read file");
+    read_from_file
+        .read_to_string(&mut contents)
+        .expect("Failed to read file");
     let mut updated_contents = String::new();
     let mut lines = contents.lines();
     while let Some(line) = lines.next() {
@@ -288,8 +354,14 @@ fn remove_task() {
             updated_contents.push('\n');
         }
     }
-    let mut write_to_file = OpenOptions::new().write(true).truncate(true).open(&task_file_path).expect("Failed to open file");
-    write_to_file.write_all(updated_contents.as_bytes()).expect("Failed to write to file");
+    let mut write_to_file = OpenOptions::new()
+        .write(true)
+        .truncate(true)
+        .open(&task_file_path)
+        .expect("Failed to open file");
+    write_to_file
+        .write_all(updated_contents.as_bytes())
+        .expect("Failed to write to file");
     println!("----------------------------------------------------");
     println!("Task removed");
     main_console();
@@ -299,10 +371,15 @@ fn edit_task() {
     println!("--------------- Task Planner Program ---------------");
     println!("Please enter the name of the task you would like to edit:");
     let task_name = inputs();
-    let task_file_path = format!("C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt", get_username());
+    let task_file_path = format!(
+        "C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt",
+        get_username()
+    );
     let mut read_from_file = File::open(&task_file_path).expect("Failed to open file");
     let mut contents = String::new();
-    read_from_file.read_to_string(&mut contents).expect("Failed to read file");
+    read_from_file
+        .read_to_string(&mut contents)
+        .expect("Failed to read file");
 
     let mut updated_contents = String::new();
     let mut lines = contents.lines();
@@ -335,8 +412,14 @@ fn edit_task() {
         }
     }
 
-    let mut write_to_file = OpenOptions::new().write(true).truncate(true).open(&task_file_path).expect("Failed to open file");
-    write_to_file.write_all(updated_contents.as_bytes()).expect("Failed to write to file");
+    let mut write_to_file = OpenOptions::new()
+        .write(true)
+        .truncate(true)
+        .open(&task_file_path)
+        .expect("Failed to open file");
+    write_to_file
+        .write_all(updated_contents.as_bytes())
+        .expect("Failed to write to file");
 
     println!("----------------------------------------------------");
     println!("Task edited");
@@ -348,10 +431,15 @@ fn mark_as_completed() {
     println!("Please enter the name of the task you would like to mark as completed:");
     let task_name = inputs();
     println!("----------------------------------------------------");
-    let task_file_path = format!("C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt", get_username());
+    let task_file_path = format!(
+        "C:\\Users\\{}\\AppData\\Roaming\\Task Planner\\Tasks.txt",
+        get_username()
+    );
     let mut read_from_file = File::open(&task_file_path).expect("Failed to open file");
     let mut contents = String::new();
-    read_from_file.read_to_string(&mut contents).expect("Failed to read file");
+    read_from_file
+        .read_to_string(&mut contents)
+        .expect("Failed to read file");
 
     let lines: Vec<&str> = contents.lines().collect();
     let mut updated_contents = String::new();
@@ -366,14 +454,20 @@ fn mark_as_completed() {
         i += 1;
     }
 
-    let mut write_to_file = OpenOptions::new().write(true).truncate(true).open(&task_file_path).expect("Failed to open file");
-    write_to_file.write_all(updated_contents.as_bytes()).expect("Failed to write to file");
+    let mut write_to_file = OpenOptions::new()
+        .write(true)
+        .truncate(true)
+        .open(&task_file_path)
+        .expect("Failed to open file");
+    write_to_file
+        .write_all(updated_contents.as_bytes())
+        .expect("Failed to write to file");
 
     println!("----------------------------------------------------");
     println!("Task marked as completed");
     main_console();
 }
-fn uninstall()   {
+fn uninstall() {
     println!("--------------- Task Planner Program ---------------");
     println!("Are you sure you would like to remove the program and all of its data stored in its files?");
     println!("This action cannot be undone. (y/n)");
@@ -420,7 +514,7 @@ fn additional_options() {
             "1" => {
                 println!("-------------------------------------------------------");
                 println!(
-                        r#"
+                    r#"
 # Privacy Policy
 
 Effective Date: 01/10/2025 MM/DD/YYYY
@@ -456,7 +550,8 @@ will be posted within the application, and the effective date will be updated ac
 
 https://github.com/Polycarbohydrate/Task-Planner/blob/main/Privacy-Policy.md
 
-                        "#);
+                        "#
+                );
                 println!("-------------------------------------------------------");
                 press_btn_continue::wait("Press any key to continue...").unwrap();
                 println!(" ");
@@ -466,7 +561,7 @@ https://github.com/Polycarbohydrate/Task-Planner/blob/main/Privacy-Policy.md
             "2" => {
                 println!("-------------------------------------------------------");
                 println!(
-                        r#"
+                    r#"
 MIT License
 
 Copyright (c) 2025 Polycarbohydrate
@@ -491,7 +586,8 @@ SOFTWARE.
 
 https://github.com/Polycarbohydrate/Task-Planner/blob/main/LICENSE
 
-                        "#);
+                        "#
+                );
                 println!("-------------------------------------------------------");
                 press_btn_continue::wait("Press any key to continue...").unwrap();
                 println!(" ");
@@ -539,7 +635,7 @@ https://github.com/Polycarbohydrate/Task-Planner/blob/main/LICENSE
                 println!("-------------------------------------------------------");
                 println!("Invalid response. Please try again. (type '1', '2', '3', or '4'.");
                 println!("-------------------------------------------------------");
-                continue
+                continue;
             }
         }
     }
