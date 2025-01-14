@@ -28,7 +28,8 @@ impl Describe for Task<String> {
             self.task_description,
             self.task_date,
             self.task_time,
-            self.task_priority
+            self.task_priority,
+        )
     }
 }
 
